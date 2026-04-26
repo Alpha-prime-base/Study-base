@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAI Exam Prep — 436E2A Artificial Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --card: #1a2235;
+    --border: #2a3a55;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --warn: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --5m: #f59e0b;
+    --10m: #7c3aed;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px 16px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .logo { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
+  .title { font-size: 18px; font-weight: 700; color: #fff; }
+  .subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .badge { background: var(--accent2); color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 600; margin-left: auto; white-space: nowrap; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 6px; margin-top: 14px; overflow-x: auto; padding-bottom: 2px; }
+  .tab {
+    padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600;
+    border: 1px solid var(--border); cursor: pointer; white-space: nowrap;
+    background: transparent; color: var(--muted); transition: all 0.2s;
+  }
+  .tab:hover { color: var(--text); border-color: var(--accent); }
+  .tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  /* MAIN */
+  main { padding: 20px 16px; max-width: 900px; margin: 0 auto; }
+
+  /* SEARCH */
+  .search-box {
+    width: 100%; padding: 12px 16px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 10px; color: var(--text);
+    font-family: 'Sora', sans-serif; font-size: 14px; margin-bottom: 20px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .search-box:focus { border-color: var(--accent); }
+  .search-box::placeholder { color: var(--muted); }
+
+  /* SECTION LABEL */
+  .section-label {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    color: var(--muted); letter-spacing: 1px; text-transform: uppercase;
+    margin: 24px 0 12px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .mark-badge {
+    padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700;
+  }
+  .mark-5 { background: rgba(245,158,11,0.15); color: var(--5m); border: 1px solid rgba(245,158,11,0.3); }
+  .mark-10 { background: rgba(124,58,237,0.15); color: var(--10m); border: 1px solid rgba(124,58,237,0.3); }
+
+  /* Q CARD */
+  .q-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 10px; overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .q-card:hover { border-color: var(--accent); }
+  .q-header {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    cursor: pointer; user-select: none;
+  }
+  .q-num {
+    font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent);
+    min-width: 28px; padding-top: 2px;
+  }
+  .q-text { font-size: 14px; font-weight: 600; flex: 1; line-height: 1.5; }
+  .q-arrow {
+    font-size: 12px; color: var(--muted); transition: transform 0.3s; padding-top: 3px;
+  }
+  .q-card.open .q-arrow { transform: rotate(180deg); }
+
+  /* ANSWER */
+  .q-answer {
+    display: none; padding: 0 16px 16px 56px; color: var(--muted);
+    font-size: 13px; line-height: 1.8; border-top: 1px solid var(--border);
+  }
+  .q-card.open .q-answer { display: block; padding-top: 14px; }
+  .q-answer h4 { color: var(--accent); font-size: 12px; margin: 12px 0 6px; text-transform: uppercase; letter-spacing: 1px; }
+  .q-answer p { margin-bottom: 10px; color: #cbd5e1; }
+  .q-answer ul { padding-left: 18px; margin-bottom: 10px; }
+  .q-answer ul li { margin-bottom: 6px; color: #cbd5e1; }
+  .q-answer strong { color: var(--accent); }
+  .q-answer .tip {
+    background: rgba(16,185,129,0.1); border-left: 3px solid var(--accent3);
+    padding: 8px 12px; border-radius: 0 6px 6px 0; margin-top: 10px;
+    font-size: 12px; color: #6ee7b7;
+  }
+  .q-answer table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; }
+  .q-answer th { background: rgba(0,212,255,0.1); color: var(--accent); padding: 8px; text-align: left; border: 1px solid var(--border); }
+  .q-answer td { padding: 7px 8px; border: 1px solid var(--border); color: #cbd5e1; }
+  .q-answer .code {
+    background: #0d1117; border: 1px solid var(--border); border-radius: 6px;
+    padding: 10px 12px; font-family: 'Space Mono', monospace; font-size: 11px;
+    color: #7dd3fc; margin: 8px 0; overflow-x: auto; white-space: pre;
+  }
+
+  /* YEAR CHIP */
+  .year-chip { font-size: 10px; padding: 2px 7px; border-radius: 4px; margin-left: 6px; }
+  .y2024 { background: rgba(0,212,255,0.1); color: var(--accent); }
+  .y2024n { background: rgba(16,185,129,0.1); color: var(--accent3); }
+  .y2025 { background: rgba(245,158,11,0.1); color: var(--warn); }
+
+  /* STATS BAR */
+  .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .stat-card {
+    flex: 1; min-width: 120px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px;
+  }
+  .stat-num { font-family: 'Space Mono', monospace; font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .hidden { display: none !important; }
+  .no-results { text-align: center; color: var(--muted); padding: 40px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div>
+      <div class="logo">436E2A • CS21C • MC43E • 535C3B</div>
+      <div class="title">Artificial Intelligence — Exam Prep</div>
+      <div class="subtitle">Part B (5M) & Part C (10M) — April 2024 · Nov 2024 · April 2025</div>
+    </div>
+    <div class="badge">alphaprime.co.in</div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="filterYear('all')">All Questions</button>
+    <button class="tab" onclick="filterYear('apr2024')">Apr 2024</button>
+    <button class="tab" onclick="filterYear('nov2024')">Nov 2024</button>
+    <button class="tab" onclick="filterYear('apr2025')">Apr 2025</button>
+    <button class="tab" onclick="filterYear('5m')">5M Only</button>
+    <button class="tab" onclick="filterYear('10m')">10M Only</button>
+  </div>
+</header>
+
+<main>
+  <input class="search-box" type="text" placeholder="🔍  Search any topic... (e.g. A*, Hill Climbing, Bayes)" oninput="searchQs(this.value)" />
+
+  <div class="stats">
+    <div class="stat-card"><div class="stat-num">24</div><div class="stat-label">Total Questions</div></div>
+    <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">5-Mark (Part B)</div></div>
+    <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">10-Mark (Part C)</div></div>
+    <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Exam Papers</div></div>
+  </div>
+
+  <div id="qlist"></div>
+</main>
+
+<script>
+const questions = [
+
+// ===== APRIL 2024 — PART B =====
+{id:1, year:"apr2024", marks:5, num:"Q13", text:"Explain the nature of environments in AI.",
+answer:`<h4>Definition</h4>
+<p>In AI, an <strong>environment</strong> is everything external to the agent that the agent interacts with. The nature (type) of the environment affects how agents are designed.</p>
+<h4>Types of Environments</h4>
+<ul>
+<li><strong>Fully Observable vs Partially Observable:</strong> If sensors give complete state → fully observable. Otherwise partially observable (agent needs memory).</li>
+<li><strong>Deterministic vs Stochastic:</strong> Deterministic: next state fully determined by current state + action. Stochastic: randomness/uncertainty exists (e.g., real world).</li>
+<li><strong>Episodic vs Sequential:</strong> Episodic: each episode independent (image classifier). Sequential: current decision affects future (chess).</li>
+<li><strong>Static vs Dynamic:</strong> Static: environment unchanged while agent thinks. Dynamic: it changes (e.g., driving).</li>
+<li><strong>Discrete vs Continuous:</strong> Discrete: finite states (chess). Continuous: real-valued states (robot movement).</li>
+<li><strong>Single Agent vs Multi-Agent:</strong> One agent or multiple agents (cooperative/competitive).</li>
+</ul>
+<div class="tip">📌 Exam tip: PEAS (Performance, Environment, Actuators, Sensors) is used to describe an agent's task environment.</div>`},
+
+{id:2, year:"apr2024", marks:5, num:"Q14", text:"Describe the Depth First Search technique.",
+answer:`<h4>Definition</h4>
+<p><strong>DFS</strong> explores as deep as possible along each branch before backtracking. It uses a <strong>Stack</strong> (LIFO) or recursion.</p>
+<h4>Algorithm</h4>
+<div class="code">1. Push start node to stack
+2. While stack not empty:
+   a. Pop top node
+   b. If it's the goal → return path
+   c. Mark as visited
+   d. Push all unvisited neighbors</div>
+<h4>Properties</h4>
+<ul>
+<li><strong>Complete?</strong> No (may loop in infinite graphs)</li>
+<li><strong>Optimal?</strong> No (doesn't find shortest path)</li>
+<li><strong>Time Complexity:</strong> O(b^m) where b = branching factor, m = max depth</li>
+<li><strong>Space Complexity:</strong> O(bm) — linear space ✅</li>
+</ul>
+<div class="tip">📌 DFS uses less memory than BFS but is not guaranteed to find the optimal path.</div>`},
+
+{id:3, year:"apr2024", marks:5, num:"Q15", text:"Explain the Hill Climbing technique.",
+answer:`<h4>Definition</h4>
+<p><strong>Hill Climbing</strong> is a local search algorithm. It continuously moves towards increasing value (like climbing a hill) without exploring the full search space.</p>
+<h4>Algorithm</h4>
+<div class="code">1. Start with current state
+2. Evaluate neighbours
+3. Move to the neighbour with highest value
+4. Repeat until no better neighbour (local max)</div>
+<h4>Types</h4>
+<ul>
+<li><strong>Simple Hill Climbing:</strong> Move to first better neighbour</li>
+<li><strong>Steepest Ascent HC:</strong> Move to the best of all neighbours</li>
+<li><strong>Stochastic HC:</strong> Random selection among better neighbours</li>
+</ul>
+<h4>Problems</h4>
+<ul>
+<li><strong>Local Maximum:</strong> Stuck at suboptimal peak</li>
+<li><strong>Plateau:</strong> Flat region — no improvement</li>
+<li><strong>Ridge:</strong> Difficult narrow path</li>
+</ul>
+<div class="tip">📌 Solution to local maxima: Simulated Annealing or Random restart hill climbing.</div>`},
+
+{id:4, year:"apr2024", marks:5, num:"Q16", text:"Discuss on the Frame problem.",
+answer:`<h4>Definition</h4>
+<p>The <strong>Frame Problem</strong> in AI is the challenge of representing what does <em>not</em> change when an action is performed. When an agent takes an action, most things in the world stay the same — but how do we tell the AI which things stay the same without listing everything explicitly?</p>
+<h4>Example</h4>
+<p>If a robot moves a cup from table to shelf, the cup's position changes. But the color of the cup, the weight, the table itself — all unchanged. Listing all these "unchanged facts" is impractical.</p>
+<h4>Solutions</h4>
+<ul>
+<li><strong>Frame Axioms:</strong> Explicitly state what stays the same (tedious)</li>
+<li><strong>Successor State Axioms:</strong> For each fluent, define when it changes and when it doesn't</li>
+<li><strong>Non-Monotonic Reasoning / Default Logic:</strong> Assume things stay the same unless changed</li>
+</ul>
+<div class="tip">📌 Frame problem is fundamental in knowledge representation and planning in AI.</div>`},
+
+{id:5, year:"apr2024", marks:5, num:"Q17", text:"Write short notes on Logical Programming.",
+answer:`<h4>Definition</h4>
+<p><strong>Logic Programming</strong> is a programming paradigm based on formal logic. Programs consist of facts and rules; computation is done by logical inference.</p>
+<h4>Key Concepts</h4>
+<ul>
+<li><strong>Facts:</strong> Basic assertions (e.g., <code>parent(tom, bob).</code>)</li>
+<li><strong>Rules:</strong> Conditional statements (e.g., <code>grandparent(X,Z) :- parent(X,Y), parent(Y,Z).</code>)</li>
+<li><strong>Queries:</strong> Questions asked to the system (e.g., <code>?- grandparent(tom, who).</code>)</li>
+</ul>
+<h4>Language: Prolog</h4>
+<p>Most popular logic programming language. Uses <strong>backward chaining</strong> and <strong>unification</strong> to answer queries.</p>
+<h4>Advantages</h4>
+<ul>
+<li>Natural representation of knowledge</li>
+<li>Automatic backtracking</li>
+<li>Good for expert systems and NLP</li>
+</ul>`},
+
+{id:6, year:"apr2024", marks:5, num:"Q18", text:"Describe the First-Order Logic.",
+answer:`<h4>Definition</h4>
+<p><strong>First-Order Logic (FOL)</strong>, also called Predicate Logic, extends propositional logic by adding <strong>predicates, functions, variables, and quantifiers</strong>.</p>
+<h4>Components</h4>
+<ul>
+<li><strong>Constants:</strong> Specific objects (John, 5)</li>
+<li><strong>Variables:</strong> Represent any object (x, y)</li>
+<li><strong>Predicates:</strong> Properties/relations (Loves(x,y), Human(x))</li>
+<li><strong>Functions:</strong> Map objects (MotherOf(x))</li>
+<li><strong>Quantifiers:</strong> ∀ (for all), ∃ (there exists)</li>
+<li><strong>Connectives:</strong> ∧, ∨, ¬, →, ↔</li>
+</ul>
+<h4>Examples</h4>
+<div class="code">∀x Human(x) → Mortal(x)   [All humans are mortal]
+∃x Likes(x, IceCream)      [Someone likes ice cream]</div>
+<div class="tip">📌 FOL is more expressive than propositional logic. Used in knowledge bases and theorem proving.</div>`},
+
+{id:7, year:"apr2024", marks:5, num:"Q19", text:"Explain the Model Based Reasoning.",
+answer:`<h4>Definition</h4>
+<p><strong>Model-Based Reasoning (MBR)</strong> uses a model of the system being diagnosed or analyzed to reason about its behavior, rather than relying only on pre-programmed rules.</p>
+<h4>Key Idea</h4>
+<p>The AI has a model (structure + behavior) of the system. It predicts expected behavior and compares with actual behavior to detect faults or make decisions.</p>
+<h4>Steps</h4>
+<ul>
+<li>Build/use a structural model of the domain</li>
+<li>Simulate expected behavior</li>
+<li>Compare predicted vs observed output</li>
+<li>Diagnose discrepancies</li>
+</ul>
+<h4>Applications</h4>
+<ul>
+<li>Medical diagnosis</li>
+<li>Circuit/device fault diagnosis</li>
+<li>Engineering troubleshooting</li>
+</ul>
+<div class="tip">📌 Contrast: Rule-based systems use IF-THEN rules; MBR uses structural/causal models.</div>`},
+
+// ===== APRIL 2024 — PART C =====
+{id:8, year:"apr2024", marks:10, num:"Q20", text:"Explain the structure of Agents for AI problem.",
+answer:`<h4>What is an Agent?</h4>
+<p>An <strong>AI agent</strong> is anything that perceives its environment through sensors and acts upon that environment through actuators.</p>
+<h4>PEAS Framework</h4>
+<table>
+<tr><th>Component</th><th>Description</th><th>Example (Self-driving car)</th></tr>
+<tr><td>Performance</td><td>Measure of success</td><td>Safety, speed, comfort</td></tr>
+<tr><td>Environment</td><td>Where agent operates</td><td>Roads, traffic</td></tr>
+<tr><td>Actuators</td><td>Actions available</td><td>Steering, brakes</td></tr>
+<tr><td>Sensors</td><td>Inputs received</td><td>Camera, GPS, radar</td></tr>
+</table>
+<h4>Types of Agents</h4>
+<ul>
+<li><strong>Simple Reflex Agent:</strong> Acts only on current percept (IF-THEN rules). No memory.</li>
+<li><strong>Model-Based Reflex Agent:</strong> Maintains internal state model of world.</li>
+<li><strong>Goal-Based Agent:</strong> Has goals; chooses actions that achieve goals.</li>
+<li><strong>Utility-Based Agent:</strong> Uses utility function to choose best action among alternatives.</li>
+<li><strong>Learning Agent:</strong> Can learn from experience and improve over time.</li>
+</ul>
+<h4>Agent Structure</h4>
+<div class="code">Agent = Architecture + Program
+Agent Function: maps percept sequence → action
+Agent Program: implements the agent function</div>
+<div class="tip">📌 Learning agent has 4 parts: Performance element, Critic, Learning element, Problem generator.</div>`},
+
+{id:9, year:"apr2024", marks:10, num:"Q21", text:"Describe the A* algorithm in detail.",
+answer:`<h4>Definition</h4>
+<p><strong>A* (A-Star)</strong> is an informed search algorithm that finds the shortest path from start to goal using a heuristic function.</p>
+<h4>Evaluation Function</h4>
+<div class="code">f(n) = g(n) + h(n)
+g(n) = cost from start to node n
+h(n) = heuristic estimated cost from n to goal
+f(n) = total estimated cost</div>
+<h4>Algorithm Steps</h4>
+<ul>
+<li>1. Add start node to Open List with f=0</li>
+<li>2. Pick node with lowest f(n) from Open List</li>
+<li>3. If it's the goal → done! Trace back path.</li>
+<li>4. Move to Closed List</li>
+<li>5. For each neighbor: compute g, h, f values</li>
+<li>6. If not in Open/Closed, add to Open List</li>
+<li>7. If already in Open with higher f, update</li>
+<li>8. Repeat from step 2</li>
+</ul>
+<h4>Properties</h4>
+<ul>
+<li><strong>Complete:</strong> Yes (finds solution if one exists)</li>
+<li><strong>Optimal:</strong> Yes, if h(n) is admissible (never overestimates)</li>
+<li><strong>Admissible Heuristic:</strong> h(n) ≤ actual cost</li>
+</ul>
+<h4>Example Heuristics</h4>
+<ul>
+<li>Manhattan distance (grid movement)</li>
+<li>Euclidean distance (straight-line)</li>
+</ul>
+<div class="tip">📌 A* is better than Dijkstra (uses heuristic) and Greedy BFS (uses cost too). Used in GPS, game pathfinding.</div>`},
+
+{id:10, year:"apr2024", marks:10, num:"Q22", text:"Discuss on Mini-Max algorithm for game playing.",
+answer:`<h4>Definition</h4>
+<p><strong>Minimax</strong> is a decision-making algorithm for two-player zero-sum games. One player maximizes score (MAX), the other minimizes (MIN).</p>
+<h4>Algorithm</h4>
+<div class="code">function MINIMAX(node, depth, isMax):
+  if terminal(node): return utility(node)
+  if isMax:
+    return max(MINIMAX(child, depth-1, False) for child in children)
+  else:
+    return min(MINIMAX(child, depth-1, True) for child in children)</div>
+<h4>How it Works</h4>
+<ul>
+<li>Build a complete game tree</li>
+<li>At leaf nodes, evaluate with utility function</li>
+<li>Backup values: MAX player picks highest, MIN picks lowest</li>
+<li>Root node's best action is the one with highest backed-up value</li>
+</ul>
+<h4>Properties</h4>
+<ul>
+<li><strong>Complete:</strong> Yes (for finite games)</li>
+<li><strong>Optimal:</strong> Yes (against optimal opponent)</li>
+<li><strong>Time:</strong> O(b^m) — exponential</li>
+<li><strong>Space:</strong> O(bm)</li>
+</ul>
+<div class="tip">📌 Limitation: Too slow for complex games like Chess. Solution → Alpha-Beta Pruning (prunes branches that won't be chosen).</div>`},
+
+{id:11, year:"apr2024", marks:10, num:"Q23", text:"Explain the method of representing knowledge using rules.",
+answer:`<h4>Rule-Based Knowledge Representation</h4>
+<p>Knowledge is represented as <strong>IF-THEN (production) rules</strong>. These are the most natural way to represent procedural knowledge.</p>
+<h4>Structure of a Rule</h4>
+<div class="code">IF (condition / antecedent)
+THEN (action / consequent)
+
+Example:
+IF temperature > 38 AND headache = true
+THEN diagnosis = fever</div>
+<h4>Components of Rule-Based System</h4>
+<ul>
+<li><strong>Knowledge Base (KB):</strong> Collection of IF-THEN rules</li>
+<li><strong>Working Memory:</strong> Current facts/state of the world</li>
+<li><strong>Inference Engine:</strong> Applies rules to working memory</li>
+</ul>
+<h4>Inference Methods</h4>
+<ul>
+<li><strong>Forward Chaining:</strong> Start from facts, apply rules, derive conclusions (data-driven)</li>
+<li><strong>Backward Chaining:</strong> Start from goal, find rules that support it (goal-driven)</li>
+</ul>
+<h4>Advantages</h4>
+<ul><li>Easy to understand and modify</li><li>Good for expert knowledge</li></ul>
+<h4>Disadvantages</h4>
+<ul><li>Rule conflicts</li><li>Doesn't handle uncertainty well</li></ul>
+<div class="tip">📌 Used in expert systems like MYCIN (medical diagnosis) and DENDRAL (chemistry).</div>`},
+
+{id:12, year:"apr2024", marks:10, num:"Q24", text:"Describe about the Backward Chaining in detail.",
+answer:`<h4>Definition</h4>
+<p><strong>Backward Chaining</strong> is a goal-driven inference strategy. It starts from the goal and works backwards to find facts that support it.</p>
+<h4>Algorithm</h4>
+<div class="code">function BC(goal, KB):
+  if goal is in KB (known fact): return TRUE
+  find rules where goal is in CONSEQUENT
+  for each such rule:
+    try to prove all conditions (antecedents) recursively
+    if all conditions proven: return TRUE
+  return FALSE</div>
+<h4>Step-by-Step Example</h4>
+<p>Rules: R1: A∧B→C, R2: D→A, R3: E→B. Known facts: D, E. Goal: C</p>
+<ul>
+<li>Goal: C → use R1 → need A and B</li>
+<li>Goal: A → use R2 → need D → D is fact ✓</li>
+<li>Goal: B → use R3 → need E → E is fact ✓</li>
+<li>All conditions met → C is proved ✓</li>
+</ul>
+<h4>Comparison</h4>
+<table>
+<tr><th>Feature</th><th>Forward Chaining</th><th>Backward Chaining</th></tr>
+<tr><td>Driven by</td><td>Data/Facts</td><td>Goal</td></tr>
+<tr><td>Direction</td><td>Bottom-up</td><td>Top-down</td></tr>
+<tr><td>Used when</td><td>All data available</td><td>Specific goal known</td></tr>
+<tr><td>Example</td><td>Monitoring systems</td><td>Diagnosis, Prolog</td></tr>
+</table>
+<div class="tip">📌 Prolog uses backward chaining with depth-first search for inference.</div>`},
+
+{id:13, year:"apr2024", marks:10, num:"Q25", text:"Illustrate the structure of Expert System in detail.",
+answer:`<h4>Definition</h4>
+<p>An <strong>Expert System (ES)</strong> is an AI program that simulates the decision-making ability of a human expert in a specific domain.</p>
+<h4>Components / Architecture</h4>
+<ul>
+<li><strong>Knowledge Base (KB):</strong> Domain-specific facts + rules (IF-THEN). The "brain."</li>
+<li><strong>Inference Engine:</strong> Reasoning mechanism; applies KB to solve problems (forward/backward chaining).</li>
+<li><strong>Working Memory:</strong> Temporary storage of current problem facts.</li>
+<li><strong>User Interface:</strong> Interaction between user and ES (questions/answers).</li>
+<li><strong>Explanation Facility:</strong> Explains HOW and WHY a conclusion was reached.</li>
+<li><strong>Knowledge Acquisition Facility:</strong> Interface to add/update knowledge (worked with by knowledge engineer).</li>
+</ul>
+<h4>Working Process</h4>
+<div class="code">User → provides facts via UI
+UI → sends to Inference Engine
+Inference Engine → queries Knowledge Base
+→ derives conclusion
+→ explanation facility explains reasoning
+→ result shown to user</div>
+<h4>Famous Expert Systems</h4>
+<ul>
+<li><strong>MYCIN:</strong> Medical diagnosis (bacterial infections)</li>
+<li><strong>DENDRAL:</strong> Chemical structure identification</li>
+<li><strong>XCON:</strong> Computer configuration (DEC)</li>
+</ul>
+<div class="tip">📌 Advantages: Available 24/7, consistent, captures expert knowledge. Limitation: No common sense, hard to update large KBs.</div>`},
+
+// ===== NOVEMBER 2024 — PART B =====
+{id:14, year:"nov2024", marks:5, num:"Q13", text:"Describe the structure of Agents in AI.",
+answer:`<h4>Agent Definition</h4>
+<p>An agent perceives its environment via <strong>sensors</strong> and acts via <strong>actuators</strong>. Agent function maps percept sequence to actions.</p>
+<h4>Types of Agent Programs</h4>
+<ul>
+<li><strong>Simple Reflex:</strong> condition-action rules only (no history)</li>
+<li><strong>Model-Based:</strong> internal state + model of world</li>
+<li><strong>Goal-Based:</strong> considers future goals</li>
+<li><strong>Utility-Based:</strong> maximizes utility function</li>
+<li><strong>Learning Agent:</strong> improves from experience</li>
+</ul>
+<div class="tip">📌 Use PEAS to specify an agent's task environment.</div>`},
+
+{id:15, year:"nov2024", marks:5, num:"Q14", text:"Write about the Uninformed Search Strategies.",
+answer:`<h4>Definition</h4>
+<p><strong>Uninformed (Blind) Search</strong> strategies have no additional information about states beyond the problem definition. They don't use heuristics.</p>
+<h4>Types</h4>
+<ul>
+<li><strong>BFS (Breadth First Search):</strong> Explores level by level. Uses Queue. Complete & Optimal (uniform cost). Space: O(b^d).</li>
+<li><strong>DFS (Depth First Search):</strong> Explores deep first. Uses Stack. Not optimal. Space: O(bm) — efficient memory.</li>
+<li><strong>Uniform Cost Search (UCS):</strong> Expands cheapest cost node first. Optimal. Like Dijkstra's.</li>
+<li><strong>Depth Limited Search:</strong> DFS with a depth limit L. Avoids infinite loops.</li>
+<li><strong>Iterative Deepening DFS (IDDFS):</strong> Combines BFS completeness + DFS space efficiency. Most practical uninformed method.</li>
+<li><strong>Bidirectional Search:</strong> Searches from both start and goal simultaneously.</li>
+</ul>
+<div class="tip">📌 IDDFS is generally the preferred uninformed strategy — complete, optimal, efficient memory.</div>`},
+
+{id:16, year:"nov2024", marks:5, num:"Q15", text:"Explain the Problem Reduction techniques.",
+answer:`<h4>Definition</h4>
+<p><strong>Problem Reduction</strong> (AND-OR graph search) decomposes a complex problem into simpler sub-problems. All sub-problems must be solved (AND node) or any one can be solved (OR node).</p>
+<h4>AND-OR Graphs</h4>
+<ul>
+<li><strong>OR nodes:</strong> Choose one alternative to solve (like regular search)</li>
+<li><strong>AND nodes:</strong> Must solve ALL sub-problems</li>
+</ul>
+<h4>AO* Algorithm</h4>
+<p>Best-first search on AND-OR graphs. Uses cost function to find optimal solution subgraph.</p>
+<div class="code">f(n) = cost of best solution subgraph rooted at n
+For OR node: f(n) = min of children
+For AND node: f(n) = sum of children + arc cost</div>
+<div class="tip">📌 Example: Proving a math theorem by breaking it into lemmas (AND), or choosing proof method (OR).</div>`},
+
+{id:17, year:"nov2024", marks:5, num:"Q16", text:"Discuss about the Constraint Propagation.",
+answer:`<h4>Definition</h4>
+<p><strong>Constraint Propagation</strong> is a technique to reduce the search space in Constraint Satisfaction Problems (CSPs) by enforcing consistency constraints between variables.</p>
+<h4>Key Concepts</h4>
+<ul>
+<li><strong>Variables:</strong> What we're solving for (e.g., colors for map regions)</li>
+<li><strong>Domains:</strong> Possible values for each variable</li>
+<li><strong>Constraints:</strong> Restrictions between variables</li>
+</ul>
+<h4>Arc Consistency (AC-3)</h4>
+<p>Most common method. For each arc (Xi, Xj): remove values from Xi's domain that have no consistent value in Xj's domain.</p>
+<div class="code">If Xi = {red, green}, Xj = {red}
+Constraint: Xi ≠ Xj
+→ Remove red from Xi → Xi = {green}</div>
+<h4>Advantages</h4>
+<ul><li>Reduces domain sizes before search</li><li>Detects inconsistencies early</li></ul>
+<div class="tip">📌 Used in: Sudoku solvers, scheduling, map coloring, timetabling.</div>`},
+
+{id:18, year:"nov2024", marks:5, num:"Q17", text:"Describe the Bayes' Probabilistic Inference.",
+answer:`<h4>Bayes' Theorem</h4>
+<div class="code">P(H|E) = P(E|H) × P(H) / P(E)
+
+P(H|E) = Posterior probability (H given E)
+P(E|H) = Likelihood (E given H)
+P(H)   = Prior probability of H
+P(E)   = Evidence probability</div>
+<h4>Explanation</h4>
+<ul>
+<li><strong>Prior P(H):</strong> Belief before seeing evidence</li>
+<li><strong>Likelihood P(E|H):</strong> How likely is evidence if H is true</li>
+<li><strong>Posterior P(H|E):</strong> Updated belief after seeing evidence</li>
+</ul>
+<h4>Example</h4>
+<p>Disease test: P(Disease) = 0.01, P(+|Disease) = 0.99, P(+|No Disease) = 0.05. Given positive test, what's P(Disease|+)?</p>
+<div class="code">P(Disease|+) = (0.99 × 0.01) / [(0.99×0.01) + (0.05×0.99)]
+             ≈ 0.167 (only ~17%!)</div>
+<div class="tip">📌 Bayes' theorem is the foundation of probabilistic AI, spam filters, medical diagnosis, and Naive Bayes classifiers.</div>`},
+
+// ===== NOV 2024 PART C =====
+{id:19, year:"nov2024", marks:10, num:"Q21", text:"Explain the AO* algorithm in detail.",
+answer:`<h4>Definition</h4>
+<p><strong>AO* (AO-Star)</strong> is an informed search algorithm for AND-OR graphs. It finds the optimal solution subgraph for problems decomposed into sub-problems.</p>
+<h4>Key Concepts</h4>
+<ul>
+<li><strong>OR nodes:</strong> Alternative solutions (choose one best child)</li>
+<li><strong>AND nodes:</strong> All sub-goals must be achieved</li>
+<li><strong>h(n):</strong> Heuristic estimate of cost from node n to solution</li>
+</ul>
+<h4>Cost Calculation</h4>
+<div class="code">For OR node n with children c1, c2...:
+  f(n) = min[cost(n,ci) + f(ci)]
+
+For AND node n with children c1, c2...:
+  f(n) = Σ[cost(n,ci) + f(ci)]</div>
+<h4>Algorithm Steps</h4>
+<ul>
+<li>1. Start at root, compute h(n) for all nodes</li>
+<li>2. Select node with best (lowest) f value</li>
+<li>3. Expand it; compute f for children</li>
+<li>4. Back-propagate f values upward</li>
+<li>5. Mark SOLVED nodes (when all children solved for AND, or one child for OR)</li>
+<li>6. Repeat until start node marked SOLVED</li>
+</ul>
+<h4>Example Structure</h4>
+<div class="code">A (OR) → B (AND) → [D, E]
+        → C (leaf, h=3)
+D: h=2, E: h=4
+f(B) = h(D) + h(E) + arcs = 2+4+2 = 8
+f(C) = 3 + 1 = 4
+f(A) = min(8, 4) = 4 → choose C</div>
+<div class="tip">📌 AO* always finds the optimal solution and is complete. Used in robot planning and theorem proving.</div>`},
+
+{id:20, year:"nov2024", marks:10, num:"Q22", text:"Describe the Alpha-Beta Pruning technique in detail.",
+answer:`<h4>Definition</h4>
+<p><strong>Alpha-Beta Pruning</strong> improves Minimax by cutting off branches that cannot influence the final decision, reducing computation significantly.</p>
+<h4>Key Parameters</h4>
+<ul>
+<li><strong>α (Alpha):</strong> Best value MAX player can guarantee (initialized to -∞)</li>
+<li><strong>β (Beta):</strong> Best value MIN player can guarantee (initialized to +∞)</li>
+<li><strong>Prune when α ≥ β</strong></li>
+</ul>
+<h4>Algorithm</h4>
+<div class="code">function ALPHABETA(node, depth, α, β, isMax):
+  if depth=0 or terminal: return eval(node)
+  if isMax:
+    v = -∞
+    for child in children:
+      v = max(v, ALPHABETA(child, depth-1, α, β, False))
+      α = max(α, v)
+      if α ≥ β: break  ← PRUNE (β-cutoff)
+    return v
+  else:
+    v = +∞
+    for child in children:
+      v = min(v, ALPHABETA(child, depth-1, α, β, True))
+      β = min(β, v)
+      if α ≥ β: break  ← PRUNE (α-cutoff)
+    return v</div>
+<h4>Efficiency</h4>
+<ul>
+<li>Best case: O(b^(m/2)) — doubles search depth vs Minimax</li>
+<li>Average case: O(b^(3m/4))</li>
+<li>Move ordering matters: better moves first → more pruning</li>
+</ul>
+<div class="tip">📌 Used in Chess, Checkers, Tic-Tac-Toe engines. Alpha-beta doesn't change the result, only speed.</div>`},
+
+{id:21, year:"nov2024", marks:10, num:"Q23", text:"Explain the Rule-based Deduction System in detail.",
+answer:`<h4>Definition</h4>
+<p>A <strong>Rule-Based Deduction System</strong> derives new facts from existing knowledge using logical rules. It is the core of expert systems and logic programming.</p>
+<h4>Components</h4>
+<ul>
+<li><strong>Facts:</strong> Known true assertions stored in Working Memory</li>
+<li><strong>Rules:</strong> IF (conditions) THEN (conclusions)</li>
+<li><strong>Inference Engine:</strong> Applies rules to facts to derive new facts</li>
+<li><strong>Conflict Resolution:</strong> When multiple rules fire, choose which to apply</li>
+</ul>
+<h4>Inference Methods</h4>
+<ul>
+<li><strong>Forward Chaining (Data-driven):</strong> Start with facts, apply rules, derive new facts until goal reached</li>
+<li><strong>Backward Chaining (Goal-driven):</strong> Start with goal, find supporting rules and facts</li>
+</ul>
+<h4>Conflict Resolution Strategies</h4>
+<ul>
+<li><strong>Specificity:</strong> More specific rule wins</li>
+<li><strong>Recency:</strong> Most recently added fact preferred</li>
+<li><strong>Priority:</strong> Pre-assigned rule priority</li>
+</ul>
+<h4>Example</h4>
+<div class="code">Facts: raining(true), has_umbrella(false)
+Rule: IF raining AND NOT has_umbrella THEN get_wet(true)
+Inference: → get_wet(true) derived</div>
+<div class="tip">📌 Rete algorithm is commonly used to efficiently match rules against working memory.</div>`},
+
+{id:22, year:"nov2024", marks:10, num:"Q24", text:"Write a detailed note on the Inference in First Order Logic.",
+answer:`<h4>Inference in FOL</h4>
+<p>Inference in FOL derives new sentences from existing knowledge base using inference rules.</p>
+<h4>Key Inference Rules</h4>
+<ul>
+<li><strong>Modus Ponens:</strong> From P and P→Q, derive Q</li>
+<li><strong>Universal Instantiation:</strong> From ∀x P(x), derive P(constant)</li>
+<li><strong>Existential Instantiation:</strong> From ∃x P(x), introduce new constant (Skolem)</li>
+</ul>
+<h4>Unification</h4>
+<p>Finding substitutions that make two literals identical.</p>
+<div class="code">Unify(Knows(John, x), Knows(John, Jane))
+→ Substitution: {x/Jane} ✓
+
+Unify(Knows(John, x), Knows(y, Bill))
+→ {x/Bill, y/John} ✓</div>
+<h4>Resolution</h4>
+<p>Main inference method. Convert to CNF (Conjunctive Normal Form), then apply resolution rule.</p>
+<div class="code">Clause 1: P ∨ Q
+Clause 2: ¬P ∨ R
+Resolvent: Q ∨ R</div>
+<h4>Steps for Proof by Resolution</h4>
+<ul>
+<li>1. Convert all sentences to CNF</li>
+<li>2. Negate the goal and add to KB</li>
+<li>3. Apply resolution repeatedly</li>
+<li>4. If empty clause derived → original goal proved</li>
+</ul>
+<div class="tip">📌 Resolution is complete and sound for FOL. Prolog uses SLD-resolution (a restricted form).</div>`},
+
+{id:23, year:"nov2024", marks:10, num:"Q25", text:"Discuss on the types of Expert Systems in detail.",
+answer:`<h4>Types of Expert Systems</h4>
+<ul>
+<li><strong>1. Rule-Based Expert Systems:</strong> Uses IF-THEN rules. Most common type. Example: MYCIN.</li>
+<li><strong>2. Frame-Based Expert Systems:</strong> Uses frames (structured objects with slots). Good for hierarchical knowledge.</li>
+<li><strong>3. Fuzzy Expert Systems:</strong> Handles uncertainty with fuzzy logic (degrees of truth 0-1, not just true/false).</li>
+<li><strong>4. Neural Network Expert Systems:</strong> Combines expert system structure with neural network learning.</li>
+<li><strong>5. Case-Based Reasoning (CBR):</strong> Solves new problems using solutions from similar past cases.</li>
+<li><strong>6. Model-Based Expert Systems:</strong> Uses a model of physical system for diagnosis/simulation.</li>
+</ul>
+<h4>Comparison Table</h4>
+<table>
+<tr><th>Type</th><th>Knowledge Rep.</th><th>Best For</th></tr>
+<tr><td>Rule-Based</td><td>IF-THEN rules</td><td>Well-defined domains</td></tr>
+<tr><td>Frame-Based</td><td>Frames/objects</td><td>Hierarchical domains</td></tr>
+<tr><td>Fuzzy</td><td>Fuzzy sets</td><td>Vague/uncertain data</td></tr>
+<tr><td>CBR</td><td>Cases/stories</td><td>Historical data available</td></tr>
+</table>
+<div class="tip">📌 Most modern expert systems combine multiple types (hybrid systems).</div>`},
+
+// ===== APRIL 2025 =====
+{id:24, year:"apr2025", marks:5, num:"Q13", text:"Compare and contrast Human Intelligence to Artificial Intelligence.",
+answer:`<h4>Comparison Table</h4>
+<table>
+<tr><th>Aspect</th><th>Human Intelligence</th><th>Artificial Intelligence</th></tr>
+<tr><td>Origin</td><td>Biological (brain)</td><td>Programmed/learned</td></tr>
+<tr><td>Learning</td><td>Experience, emotion</td><td>Data, algorithms</td></tr>
+<tr><td>Speed</td><td>Slower processing</td><td>Extremely fast</td></tr>
+<tr><td>Creativity</td><td>Highly creative</td><td>Limited creativity</td></tr>
+<tr><td>Common Sense</td><td>Strong</td><td>Very weak</td></tr>
+<tr><td>Adaptability</td><td>Very adaptable</td><td>Limited to training</td></tr>
+<tr><td>Emotion</td><td>Yes</td><td>No (simulated only)</td></tr>
+<tr><td>Energy Use</td><td>~20 watts</td><td>Kilowatts to Megawatts</td></tr>
+<tr><td>Consistency</td><td>Variable (fatigue)</td><td>Consistent</td></tr>
+</table>
+<div class="tip">📌 AI can outperform humans in specific narrow tasks (chess, image recognition) but lacks general intelligence and common sense.</div>`},
+
+{id:25, year:"apr2025", marks:5, num:"Q15", text:"Elaborate on Breadth First Search algorithms.",
+answer:`<h4>Definition</h4>
+<p><strong>BFS</strong> explores all nodes at depth d before exploring depth d+1. Uses a <strong>Queue (FIFO)</strong>.</p>
+<h4>Algorithm</h4>
+<div class="code">1. Enqueue start node
+2. While queue not empty:
+   a. Dequeue front node
+   b. If goal → return path
+   c. Mark as visited
+   d. Enqueue all unvisited neighbors</div>
+<h4>Properties</h4>
+<ul>
+<li><strong>Complete:</strong> Yes (finds solution if it exists)</li>
+<li><strong>Optimal:</strong> Yes (finds shortest path in terms of steps)</li>
+<li><strong>Time:</strong> O(b^d) — exponential</li>
+<li><strong>Space:</strong> O(b^d) — stores all nodes at frontier</li>
+</ul>
+<h4>BFS vs DFS</h4>
+<table>
+<tr><th></th><th>BFS</th><th>DFS</th></tr>
+<tr><td>Data Structure</td><td>Queue</td><td>Stack</td></tr>
+<tr><td>Optimal</td><td>Yes</td><td>No</td></tr>
+<tr><td>Memory</td><td>High O(b^d)</td><td>Low O(bm)</td></tr>
+<tr><td>Complete</td><td>Yes</td><td>Not always</td></tr>
+</table>
+<div class="tip">📌 BFS is the go-to for finding shortest path in unweighted graphs.</div>`},
+
+{id:26, year:"apr2025", marks:5, num:"Q16", text:"Describe Predicate Logic and its role in AI.",
+answer:`<h4>Predicate Logic = First-Order Logic (FOL)</h4>
+<p>Predicate logic extends propositional logic by allowing statements about objects and their relationships using <strong>predicates, variables, and quantifiers</strong>.</p>
+<h4>Key Elements</h4>
+<ul>
+<li><strong>Predicates:</strong> Express properties/relations: <code>Human(Socrates)</code></li>
+<li><strong>Variables:</strong> x, y, z — represent any object</li>
+<li><strong>Quantifiers:</strong> ∀ (for all), ∃ (exists)</li>
+<li><strong>Functions:</strong> <code>FatherOf(John)</code></li>
+</ul>
+<h4>Role in AI</h4>
+<ul>
+<li><strong>Knowledge Representation:</strong> Express complex domain knowledge</li>
+<li><strong>Inference:</strong> Derive new facts using resolution/unification</li>
+<li><strong>Natural Language Processing:</strong> Semantic parsing</li>
+<li><strong>Expert Systems:</strong> Basis for rule-based reasoning</li>
+<li><strong>Logic Programming (Prolog):</strong> Based on Horn clauses of FOL</li>
+</ul>
+<div class="tip">📌 FOL is more expressive than propositional logic but harder to compute (semi-decidable).</div>`},
+
+{id:27, year:"apr2025", marks:5, num:"Q18", text:"What is Bayes' theorem, and how is it used in Probabilistic Reasoning?",
+answer:`<h4>Bayes' Theorem</h4>
+<div class="code">P(H|E) = P(E|H) × P(H) / P(E)</div>
+<ul>
+<li><strong>P(H|E):</strong> Posterior — probability of hypothesis given evidence</li>
+<li><strong>P(E|H):</strong> Likelihood — probability of evidence given hypothesis</li>
+<li><strong>P(H):</strong> Prior — initial belief in hypothesis</li>
+<li><strong>P(E):</strong> Marginal — total probability of evidence</li>
+</ul>
+<h4>Use in Probabilistic Reasoning</h4>
+<ul>
+<li><strong>Updating Beliefs:</strong> Start with prior, update as evidence arrives</li>
+<li><strong>Naive Bayes Classifier:</strong> Classifies text/spam using Bayes with independence assumption</li>
+<li><strong>Bayesian Networks:</strong> Graph model of probabilistic dependencies between variables</li>
+<li><strong>Medical Diagnosis:</strong> P(disease|symptoms)</li>
+</ul>
+<div class="tip">📌 Bayesian reasoning is key in AI for handling uncertainty — allows rational updating of beliefs with evidence.</div>`},
+
+{id:28, year:"apr2025", marks:5, num:"Q19", text:"Distinguish between Propositional versus First Order Predicate Logic.",
+answer:`<h4>Comparison</h4>
+<table>
+<tr><th>Feature</th><th>Propositional Logic</th><th>First Order Predicate Logic</th></tr>
+<tr><td>Basic unit</td><td>Propositions (P, Q)</td><td>Predicates with terms</td></tr>
+<tr><td>Variables</td><td>No variables</td><td>Variables (x, y, z)</td></tr>
+<tr><td>Quantifiers</td><td>None</td><td>∀ (for all), ∃ (exists)</td></tr>
+<tr><td>Objects</td><td>No objects</td><td>Constants, functions</td></tr>
+<tr><td>Expressiveness</td><td>Limited</td><td>Much more expressive</td></tr>
+<tr><td>Decidable?</td><td>Yes</td><td>Semi-decidable</td></tr>
+<tr><td>Example</td><td>P → Q</td><td>∀x Human(x)→Mortal(x)</td></tr>
+</table>
+<h4>Key Difference</h4>
+<p>Propositional: "It is raining" (just true/false). FOL: "It is raining in city x" (can quantify over cities).</p>
+<div class="tip">📌 FOL is the standard language for AI knowledge representation; propositional logic too weak for most real domains.</div>`},
+
+{id:29, year:"apr2025", marks:10, num:"Q21", text:"Demonstrate the AO* algorithm with a suitable example.",
+answer:`<h4>AO* Algorithm — Detailed Example</h4>
+<p>Problem: Solve problem A, which can be solved via two approaches:</p>
+<div class="code">A is OR node:
+  Option 1: Solve B AND C together (AND node)
+  Option 2: Solve D alone (OR leaf)
+
+Node costs (heuristics):
+  h(B) = 4, h(C) = 5, h(D) = 6
+  Arc costs: A→BC = 1 each, A→D = 1</div>
+<h4>Computation</h4>
+<div class="code">f(AND node BC) = h(B) + h(C) + arc costs
+              = 4 + 5 + 1 + 1 = 11
+
+f(OR node D) = h(D) + arc cost
+             = 6 + 1 = 7
+
+f(A) = min(11, 7) = 7 → Choose D</div>
+<h4>Algorithm Steps Recap</h4>
+<ul>
+<li>1. Initialize: compute h for all nodes</li>
+<li>2. Start from root, find best node to expand</li>
+<li>3. Expand chosen node</li>
+<li>4. Update f values; back-propagate</li>
+<li>5. Mark solved when terminal reached</li>
+<li>6. Repeat until root solved</li>
+</ul>
+<div class="tip">📌 AO* is to AND-OR graphs what A* is to regular graphs. Always finds optimal solution.</div>`},
+
+{id:30, year:"apr2025", marks:10, num:"Q22", text:"Explain the algorithm to implement Alpha-Beta Pruning with an example.",
+answer:`<h4>Alpha-Beta Pruning with Example</h4>
+<h4>Setup</h4>
+<div class="code">Game tree (depth 2):
+           A (MAX)
+          / \
+        B     C  (MIN)
+       /\     /\
+      3  5   2  9
+
+MAX wants highest, MIN wants lowest.</div>
+<h4>Trace</h4>
+<div class="code">Start: α = -∞, β = +∞
+
+Visit B (MIN):
+  Left child = 3 → β = min(∞, 3) = 3
+  Right child = 5 → β = min(3, 5) = 3
+  B returns 3
+  At A: α = max(-∞, 3) = 3
+
+Visit C (MIN):
+  Left child = 2 → β = min(∞, 2) = 2
+  Now α=3 ≥ β=2 → PRUNE! Don't check 9
+  C returns 2
+
+A = max(3, 2) = 3 ✓</div>
+<h4>What was Pruned?</h4>
+<p>Node with value 9 was pruned — it didn't affect the outcome because MIN would never choose 9 when 2 is available.</p>
+<h4>Benefits</h4>
+<ul>
+<li>Same result as Minimax</li>
+<li>Up to O(b^(m/2)) — effectively doubles search depth</li>
+<li>More pruning with better move ordering</li>
+</ul>
+<div class="tip">📌 Alpha-Beta Pruning is used in all serious game-playing AI. Deep Blue (chess) uses it.</div>`},
+
+{id:31, year:"apr2025", marks:10, num:"Q23", text:"Describe the concept of Inheritance in Semantic Networks with an example.",
+answer:`<h4>Semantic Networks</h4>
+<p>A <strong>Semantic Network</strong> is a knowledge representation technique using nodes (concepts) and labeled arcs (relationships) to represent knowledge as a graph.</p>
+<h4>Key Relationships</h4>
+<ul>
+<li><strong>IS-A:</strong> Subclass relationship (Dog IS-A Animal)</li>
+<li><strong>INSTANCE-OF:</strong> Specific instance (Fido INSTANCE-OF Dog)</li>
+<li><strong>HAS-A:</strong> Property (Dog HAS-A Tail)</li>
+</ul>
+<h4>Inheritance</h4>
+<p>Properties defined at a higher level (superclass) are automatically inherited by lower-level nodes (subclasses) without redefining them.</p>
+<div class="code">Animal → [breathes, moves, has-cells]
+  ↓ IS-A
+Dog → [has-tail, barks] + inherits Animal properties
+  ↓ IS-A
+Fido (instance) → [name=Fido, color=Brown] + inherits Dog & Animal</div>
+<h4>Types of Inheritance</h4>
+<ul>
+<li><strong>Simple Inheritance:</strong> Single parent chain</li>
+<li><strong>Multiple Inheritance:</strong> Node inherits from multiple parents</li>
+<li><strong>Property Override:</strong> Subclass overrides parent property</li>
+</ul>
+<h4>Advantages</h4>
+<ul><li>Avoids redundancy</li><li>Easy to add new concepts</li><li>Natural representation</li></ul>
+<div class="tip">📌 Semantic networks are the basis of ontologies and the Semantic Web (RDF/OWL).</div>`},
+
+{id:32, year:"apr2025", marks:10, num:"Q24", text:"Discuss on the concept of Learning using Decision Trees with suitable example.",
+answer:`<h4>Decision Tree Learning</h4>
+<p>A <strong>Decision Tree</strong> is a supervised machine learning model that classifies instances by sorting them through a series of questions (tests on features) from root to leaf.</p>
+<h4>Structure</h4>
+<ul>
+<li><strong>Root Node:</strong> Best feature to split on</li>
+<li><strong>Internal Nodes:</strong> Feature tests</li>
+<li><strong>Branches:</strong> Outcomes of tests</li>
+<li><strong>Leaf Nodes:</strong> Final class label</li>
+</ul>
+<h4>Building Algorithm (ID3/CART)</h4>
+<div class="code">1. If all examples same class → leaf node
+2. If no features left → majority class leaf
+3. Choose best feature (by Information Gain / Gini)
+4. Split data on that feature
+5. Recurse on each subset</div>
+<h4>Information Gain</h4>
+<div class="code">IG(S, A) = Entropy(S) - Σ (|Sv|/|S|) × Entropy(Sv)
+Entropy(S) = -Σ p(c) log2 p(c)</div>
+<h4>Example — Play Tennis?</h4>
+<div class="code">Features: Outlook, Temperature, Humidity, Wind
+Root: Outlook (highest IG)
+  Sunny → check Humidity
+    High → No | Normal → Yes
+  Overcast → Yes (always)
+  Rain → check Wind
+    Weak → Yes | Strong → No</div>
+<div class="tip">📌 Advantages: Interpretable, no feature scaling needed. Disadvantage: Prone to overfitting (fix with pruning).</div>`},
+
+{id:33, year:"apr2025", marks:10, num:"Q25", text:"Explain the role of Probability in representing Uncertainty in AI systems.",
+answer:`<h4>Why Uncertainty in AI?</h4>
+<p>Real-world AI systems face uncertainty due to: incomplete information, noisy sensors, unpredictable environments, and complex causality.</p>
+<h4>Probability as a Tool</h4>
+<ul>
+<li><strong>Represents degrees of belief</strong> (not just true/false)</li>
+<li><strong>Allows rational decision making</strong> under uncertainty</li>
+<li><strong>Can be updated</strong> as new evidence arrives (Bayes)</li>
+</ul>
+<h4>Key Concepts</h4>
+<ul>
+<li><strong>Prior Probability P(H):</strong> Initial belief</li>
+<li><strong>Conditional Probability P(A|B):</strong> P(A) given B is true</li>
+<li><strong>Joint Probability P(A,B):</strong> Both A and B occur</li>
+<li><strong>Bayes' Theorem:</strong> Update belief with evidence</li>
+</ul>
+<h4>Bayesian Networks</h4>
+<p>Directed acyclic graph where nodes = random variables, edges = conditional dependencies.</p>
+<div class="code">Example: Alarm network
+  Burglary → Alarm → JohnCalls
+  Earthquake → Alarm → MaryCalls
+P(Alarm | Burglary=T, Earthquake=F) = 0.94</div>
+<h4>Applications</h4>
+<ul>
+<li>Medical diagnosis under uncertainty</li>
+<li>Spam filtering (Naive Bayes)</li>
+<li>Speech recognition (HMMs)</li>
+<li>Robot localization</li>
+</ul>
+<div class="tip">📌 Probability theory + Decision theory = Rational agents that maximize expected utility under uncertainty.</div>`},
+
+];
+
+function renderAll(filtered) {
+  const container = document.getElementById('qlist');
+  container.innerHTML = '';
+  
+  const groups = [
+    {key:'apr2024', label:'April 2024', chip:'y2024', chipText:'Apr 2024'},
+    {key:'nov2024', label:'November 2024', chip:'y2024n', chipText:'Nov 2024'},
+    {key:'apr2025', label:'April 2025', chip:'y2025', chipText:'Apr 2025'},
+  ];
+  
+  let totalShown = 0;
+  
+  for (const g of groups) {
+    const qs5 = filtered.filter(q => q.year === g.key && q.marks === 5);
+    const qs10 = filtered.filter(q => q.year === g.key && q.marks === 10);
+    
+    if (qs5.length === 0 && qs10.length === 0) continue;
+    
+    const yearEl = document.createElement('div');
+    yearEl.innerHTML = `<div class="section-label">${g.label} <span class="year-chip ${g.chip}">${g.chipText}</span></div>`;
+    container.appendChild(yearEl);
+    
+    if (qs5.length) {
+      const s5 = document.createElement('div');
+      s5.innerHTML = `<div class="section-label" style="margin-top:8px"><span class="mark-badge mark-5">5 Marks — Part B</span></div>`;
+      container.appendChild(s5);
+      qs5.forEach(q => { container.appendChild(makeCard(q)); totalShown++; });
+    }
+    if (qs10.length) {
+      const s10 = document.createElement('div');
+      s10.innerHTML = `<div class="section-label" style="margin-top:8px"><span class="mark-badge mark-10">10 Marks — Part C</span></div>`;
+      container.appendChild(s10);
+      qs10.forEach(q => { container.appendChild(makeCard(q)); totalShown++; });
+    }
+  }
+  
+  if (totalShown === 0) {
+    container.innerHTML = '<div class="no-results">No questions found. Try a different search term.</div>';
+  }
+}
+
+function makeCard(q) {
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.dataset.id = q.id;
+  card.innerHTML = `
+    <div class="q-header" onclick="toggleCard(${q.id})">
+      <div class="q-num">${q.num}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-arrow">▼</div>
+    </div>
+    <div class="q-answer">${q.answer}</div>
+  `;
+  return card;
+}
+
+function toggleCard(id) {
+  const card = document.querySelector(`.q-card[data-id="${id}"]`);
+  card.classList.toggle('open');
+}
+
+let currentFilter = 'all';
+let currentSearch = '';
+
+function filterYear(f) {
+  currentFilter = f;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  applyFilters();
+}
+
+function searchQs(val) {
+  currentSearch = val.toLowerCase();
+  applyFilters();
+}
+
+function applyFilters() {
+  let filtered = questions;
+  
+  if (currentFilter === '5m') filtered = filtered.filter(q => q.marks === 5);
+  else if (currentFilter === '10m') filtered = filtered.filter(q => q.marks === 10);
+  else if (currentFilter !== 'all') filtered = filtered.filter(q => q.year === currentFilter);
+  
+  if (currentSearch) {
+    filtered = filtered.filter(q => 
+      q.text.toLowerCase().includes(currentSearch) || 
+      q.answer.toLowerCase().includes(currentSearch)
+    );
+  }
+  
+  renderAll(filtered);
+}
+
+// Initial render
+renderAll(questions);
+</script>
+</body>
+</html>
