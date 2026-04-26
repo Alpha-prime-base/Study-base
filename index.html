@@ -141,41 +141,384 @@
 
   .hidden { display: none !important; }
   .no-results { text-align: center; color: var(--muted); padding: 40px; font-size: 14px; }
+
+  /* VIEW TRANSITIONS */
+  .view { transition: opacity 0.4s ease, transform 0.4s ease; }
+  .fade-out { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+  .fade-in { opacity: 1; transform: translateY(0); }
+
+  /* HOME SCREEN */
+  .home-screen { padding: 40px 20px; max-width: 1000px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+  .home-header { text-align: center; margin-bottom: 50px; padding-top: 20px; }
+  .home-header .logo { font-size: 12px; margin-bottom: 16px; }
+  .home-header h1 { font-size: clamp(28px, 5vw, 42px); font-weight: 800; margin: 10px 0; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .home-header p { color: var(--muted); font-size: 15px; max-width: 500px; margin: 0 auto; line-height: 1.6; }
+
+  .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; padding-bottom: 40px; }
+  .subject-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 24px;
+    padding: 28px; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .subject-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(0, 212, 255, 0.1); }
+  .subject-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), transparent 50%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .subject-card:hover::before { opacity: 1; }
+
+  .subject-icon { 
+    width: 70px; height: 70px; border-radius: 18px; 
+    background: rgba(255,255,255,0.03); display: flex; align-items: center; 
+    justify-content: center; overflow: hidden; border: 1px solid var(--border);
+  }
+  .subject-icon img { width: 100%; height: 100%; object-fit: cover; }
+  
+  .subject-info h3 { font-size: 20px; font-weight: 700; color: #fff; line-height: 1.3; }
+  .subject-meta { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .meta-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+  .meta-item svg { width: 14px; height: 14px; color: var(--accent); opacity: 0.8; }
+  .meta-item span { color: #e2e8f0; font-weight: 500; }
+
+  .subject-status {
+    position: absolute; top: 20px; right: 20px; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 20px;
+  }
+  .status-ready { background: rgba(16, 185, 129, 0.1); color: var(--accent3); border: 1px solid rgba(16, 185, 129, 0.2); }
+  .status-soon { background: rgba(245, 158, 11, 0.1); color: var(--warn); border: 1px solid rgba(245, 158, 11, 0.2); }
+  .status-passed { background: rgba(0, 212, 255, 0.1); color: var(--accent); border: 1px solid rgba(0, 212, 255, 0.2); }
+
+  .dashboard-section { margin-bottom: 40px; }
+  .dashboard-section h2 { 
+    font-size: 16px; font-weight: 700; color: var(--muted); 
+    margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
+    font-family: 'Space Mono', monospace; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .dashboard-section h2::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* BACK BUTTON */
+  .header-actions { display: flex; align-items: center; margin-bottom: 12px; }
+  .btn-back {
+    display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border); color: var(--text); padding: 6px 14px;
+    border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-back:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); color: var(--accent); }
+
+  /* COUNTDOWN TIMER */
+  .countdown {
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; justify-content: space-between; gap: 4px;
+  }
+  .cd-item { 
+    flex: 1; text-align: center; background: rgba(0,0,0,0.2); 
+    padding: 6px 2px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);
+  }
+  .cd-num { font-family: 'Space Mono', monospace; font-size: 15px; font-weight: 700; color: var(--accent); display: block; }
+  .cd-label { font-size: 8px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; display: block; }
+
+  /* NOTIFICATIONS */
+  .notification-toggle {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s; color: var(--muted);
+    position: relative;
+  }
+  .notification-toggle:hover { border-color: var(--accent); color: var(--accent); background: rgba(0, 212, 255, 0.1); }
+  .notification-toggle.active { color: var(--accent); border-color: var(--accent); }
+  .notification-toggle.has-unread::after {
+    content: ''; position: absolute; width: 8px; height: 8px; 
+    background: #ff4757; border-radius: 50%; top: -2px; right: -2px;
+    border: 2px solid var(--bg);
+  }
+
+  /* TOAST NOTIFICATIONS */
+  #toast-container {
+    position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 10000; display: flex; flex-direction: column; gap: 10px;
+    pointer-events: none;
+  }
+  .toast {
+    background: rgba(10, 15, 30, 0.95);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    color: var(--text);
+    padding: 12px 24px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    display: flex; align-items: center; gap: 12px;
+    animation: toast-in 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+    pointer-events: auto;
+    max-width: 90vw;
+    text-align: center;
+  }
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(-20px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .toast.fade-out {
+    animation: toast-out 0.3s ease forwards;
+  }
+  @keyframes toast-out {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to { opacity: 0; transform: translateY(-10px) scale(0.95); }
+  }
+
+  @media (max-width: 600px) {
+    .home-screen { padding: 20px 16px; }
+    .subject-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-top">
-    <div>
-      <div class="logo">436E2A • CS21C • MC43E • 535C3B</div>
-      <div class="title">Artificial Intelligence — Exam Prep</div>
-      <div class="subtitle">Part B (5M) & Part C (10M) — April 2024 · Nov 2024 · April 2025</div>
+<div id="home-view" class="view">
+  <main class="home-screen">
+    <div class="home-header">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; width: 100%;">
+        <h1>MSC COMPUTER SCIENCE SEM STUDY BASE</h1>
+        <div class="notification-toggle" id="notif-toggle" onclick="toggleNotifications()" title="Enable Exam Reminders">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        </div>
+      </div>
+      <p>University of Madras Syllabus 2026</p>
     </div>
-    <div class="badge">alphaprime.co.in</div>
-  </div>
-  <div class="tabs">
-    <button class="tab active" onclick="filterYear('all')">All Questions</button>
-    <button class="tab" onclick="filterYear('apr2024')">Apr 2024</button>
-    <button class="tab" onclick="filterYear('nov2024')">Nov 2024</button>
-    <button class="tab" onclick="filterYear('apr2025')">Apr 2025</button>
-    <button class="tab" onclick="filterYear('5m')">5M Only</button>
-    <button class="tab" onclick="filterYear('10m')">10M Only</button>
-  </div>
-</header>
 
-<main>
-  <input class="search-box" type="text" placeholder="🔍  Search any topic... (e.g. A*, Hill Climbing, Bayes)" oninput="searchQs(this.value)" />
+    <!-- SEMESTER 1 -->
+    <div class="dashboard-section">
+      <h2>Semester 1 (Passed)</h2>
+      <div class="subject-grid">
+        <!-- DS & Algo -->
+        <div class="subject-card" onclick="notifyRemoved('Data Structure and Algorithm')">
+          <div class="subject-status status-passed">Passed</div>
+          <div class="subject-icon">
+            <img src="assets/ds_algo_icon_1777192857046.png" alt="DS">
+          </div>
+          <div class="subject-info">
+            <h3>Data Structure and Algorithm</h3>
+            <div class="subject-meta">
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                <span style="color: #ff4757;">Content removed by Admin</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <div class="stats">
-    <div class="stat-card"><div class="stat-num">24</div><div class="stat-label">Total Questions</div></div>
-    <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">5-Mark (Part B)</div></div>
-    <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">10-Mark (Part C)</div></div>
-    <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Exam Papers</div></div>
-  </div>
+        <!-- Python -->
+        <div class="subject-card" onclick="notifyRemoved('Python Programming')">
+          <div class="subject-status status-passed">Passed</div>
+          <div class="subject-icon">
+            <img src="assets/python_icon_1777192876752.png" alt="Python">
+          </div>
+          <div class="subject-info">
+            <h3>Python Programming</h3>
+            <div class="subject-meta">
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                <span style="color: #ff4757;">Content removed by Admin</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <div id="qlist"></div>
-</main>
+        <!-- Cloud Computing -->
+        <div class="subject-card" onclick="notifyRemoved('Cloud Computing')">
+          <div class="subject-status status-passed">Passed</div>
+          <div class="subject-icon">
+            <img src="assets/cloud_icon_1777192896278.png" alt="Cloud">
+          </div>
+          <div class="subject-info">
+            <h3>Cloud Computing</h3>
+            <div class="subject-meta">
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                <span style="color: #ff4757;">Content removed by Admin</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compiler Design -->
+        <div class="subject-card" onclick="notifyRemoved('Compiler Design')">
+          <div class="subject-status status-passed">Passed</div>
+          <div class="subject-icon">
+            <img src="assets/compiler_icon_1777192912830.png" alt="Compiler">
+          </div>
+          <div class="subject-info">
+            <h3>Compiler Design</h3>
+            <div class="subject-meta">
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                <span style="color: #ff4757;">Content removed by Admin</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEMESTER 2 -->
+    <div class="dashboard-section">
+      <h2>Semester 2 (Upcoming)</h2>
+      <div class="subject-grid">
+        <!-- AI -->
+        <div class="subject-card" onclick="showSubject('ai')">
+          <div class="subject-status status-ready">Ready</div>
+          <div class="subject-icon">
+            <img src="assets/ai_subject_icon_1777192445801.png" alt="AI">
+          </div>
+          <div class="subject-info">
+            <h3>Artificial Intelligence</h3>
+            <div class="subject-meta">
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>April 27, 2026</span>
+              </div>
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>Forenoon Session</span>
+              </div>
+            </div>
+            <div class="countdown" data-exam-date="2026-04-27T10:00:00">
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Days</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Hrs</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Min</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Sec</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Web Tech -->
+        <div class="subject-card" onclick="showToast('Coming Soon', 'Web Technology content will be available shortly.')">
+          <div class="subject-status status-soon">Soon</div>
+          <div class="subject-icon">
+            <img src="assets/web_tech_icon_1777192464503.png" alt="Web Tech">
+          </div>
+          <div class="subject-info">
+            <h3>Web Technology & Advanced Java</h3>
+            <div class="subject-meta">
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>May 6, 2026</span>
+              </div>
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>Forenoon Session</span>
+              </div>
+            </div>
+            <div class="countdown" data-exam-date="2026-05-06T10:00:00">
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Days</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Hrs</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Min</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Sec</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agile -->
+        <div class="subject-card" onclick="showToast('Coming Soon', 'Agile Software Engineering content will be available shortly.')">
+          <div class="subject-status status-soon">Soon</div>
+          <div class="subject-icon">
+            <img src="assets/agile_icon_1777192487869.png" alt="Agile">
+          </div>
+          <div class="subject-info">
+            <h3>Agile Software Engineering</h3>
+            <div class="subject-meta">
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>May 8, 2026</span>
+              </div>
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>Forenoon Session</span>
+              </div>
+            </div>
+            <div class="countdown" data-exam-date="2026-05-08T10:00:00">
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Days</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Hrs</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Min</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Sec</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Mining -->
+        <div class="subject-card" onclick="showToast('Coming Soon', 'Data Mining content will be available shortly.')">
+          <div class="subject-status status-soon">Soon</div>
+          <div class="subject-icon">
+            <img src="assets/data_mining_icon_1777192505194.png" alt="Data Mining">
+          </div>
+          <div class="subject-info">
+            <h3>Data Mining & Warehousing</h3>
+            <div class="subject-meta">
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>May 20, 2026</span>
+              </div>
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>Forenoon Session</span>
+              </div>
+            </div>
+            <div class="countdown" data-exam-date="2026-05-20T10:00:00">
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Days</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Hrs</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Min</span></div>
+              <div class="cd-item"><span class="cd-num">00</span><span class="cd-label">Sec</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="subject-view" class="view hidden">
+  <header>
+    <div class="header-actions">
+      <button class="btn-back" onclick="showHome()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Go to Home
+      </button>
+    </div>
+    <div class="header-top">
+      <div>
+        <div class="logo">436E2A • CS21C • MC43E • 535C3B</div>
+        <div class="title">Artificial Intelligence — Exam Prep</div>
+        <div class="subtitle">Part B (5M) & Part C (10M) — April 2024 · Nov 2024 · April 2025</div>
+      </div>
+      <div class="badge">alphaprime.co.in</div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="filterYear('all')">All Questions</button>
+      <button class="tab" onclick="filterYear('apr2024')">Apr 2024</button>
+      <button class="tab" onclick="filterYear('nov2024')">Nov 2024</button>
+      <button class="tab" onclick="filterYear('apr2025')">Apr 2025</button>
+      <button class="tab" onclick="filterYear('5m')">5M Only</button>
+      <button class="tab" onclick="filterYear('10m')">10M Only</button>
+    </div>
+  </header>
+
+  <main>
+    <input class="search-box" type="text" placeholder="🔍  Search any topic... (e.g. A*, Hill Climbing, Bayes)" oninput="searchQs(this.value)" />
+
+    <div class="stats">
+      <div class="stat-card"><div class="stat-num">24</div><div class="stat-label">Total Questions</div></div>
+      <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">5-Mark (Part B)</div></div>
+      <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">10-Mark (Part C)</div></div>
+      <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Exam Papers</div></div>
+    </div>
+
+    <div id="qlist"></div>
+  </main>
+</div>
 
 <script>
 const questions = [
@@ -1043,6 +1386,137 @@ function applyFilters() {
 
 // Initial render
 renderAll(questions);
+
+function showSubject(id) {
+  if (id === 'ai') {
+    const home = document.getElementById('home-view');
+    const subject = document.getElementById('subject-view');
+    
+    home.classList.add('fade-out');
+    setTimeout(() => {
+      home.classList.add('hidden');
+      home.classList.remove('fade-out');
+      subject.classList.remove('hidden');
+      subject.classList.add('fade-in');
+      window.scrollTo(0, 0);
+    }, 400);
+  }
+}
+
+function showHome() {
+  const home = document.getElementById('home-view');
+  const subject = document.getElementById('subject-view');
+  
+  subject.classList.add('fade-out');
+  setTimeout(() => {
+    subject.classList.add('hidden');
+    subject.classList.remove('fade-out');
+    home.classList.remove('hidden');
+    home.classList.add('fade-in');
+    window.scrollTo(0, 0);
+  }, 400);
+}
+  function updateCountdowns() {
+    const countdowns = document.querySelectorAll('.countdown');
+    countdowns.forEach(cd => {
+      const examDateStr = cd.getAttribute('data-exam-date');
+      if (!examDateStr) return;
+      
+      const examDate = new Date(examDateStr).getTime();
+      const now = new Date().getTime();
+      const distance = examDate - now;
+
+      if (distance < 0) {
+        cd.innerHTML = "<div style='flex:1; color: var(--accent); font-weight:700; font-size: 13px; text-align:center;'>EXAM STARTED!</div>";
+        return;
+      }
+
+      // Notification logic: 1 hour before exam
+      if (distance < 3600000 && !cd.hasAttribute('data-notified')) {
+        const subjectName = cd.closest('.subject-info').querySelector('h3').innerText;
+        sendNotification(`Exam Starting Soon!`, `${subjectName} exam starts in 1 hour.`);
+        cd.setAttribute('data-notified', 'true');
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      const nums = cd.querySelectorAll('.cd-num');
+      if (nums.length === 4) {
+        nums[0].innerText = days.toString().padStart(2, '0');
+        nums[1].innerText = hours.toString().padStart(2, '0');
+        nums[2].innerText = minutes.toString().padStart(2, '0');
+        nums[3].innerText = seconds.toString().padStart(2, '0');
+      }
+    });
+  }
+
+  function toggleNotifications() {
+    if (!("Notification" in window)) {
+      showToast("Not Supported", "This browser does not support desktop notifications.");
+      return;
+    }
+
+    if (Notification.permission === "granted") {
+      showToast("Notifications Active", "You're all set for exam reminders!");
+    } else {
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          showToast("Notifications Enabled", "Macha, you will get reminders for exams here.");
+          document.getElementById('notif-toggle').classList.add('active');
+        }
+      });
+    }
+  }
+
+  function sendNotification(title, body) {
+    if (Notification.permission === "granted") {
+      new Notification(title, {
+        body: body,
+        icon: 'assets/ai_subject_icon_1777192445801.png'
+      });
+    }
+  }
+
+  function showToast(title, body) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--accent); flex-shrink: 0;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+      <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
+        <div style="color: var(--accent); font-weight: 700; line-height: 1.2;">${title}</div>
+        <div style="font-size: 11px; opacity: 0.8; margin-top: 2px;">${body}</div>
+      </div>
+    `;
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.classList.add('fade-out');
+      setTimeout(() => toast.remove(), 300);
+    }, 4000);
+  }
+
+  function notifyRemoved(subjectName) {
+    showToast(`Semester 1: ${subjectName}`, "Content has been removed by Admin");
+    // Also try browser notification if permitted
+    if (Notification.permission === "granted") {
+      sendNotification(`Semester 1 subject: ${subjectName} passed`, "Content has been removed by Admin");
+    }
+  }
+
+  // Check existing permission
+  if ("Notification" in window && Notification.permission === "granted") {
+    const toggle = document.getElementById('notif-toggle');
+    if (toggle) toggle.classList.add('active');
+  }
+
+  setInterval(updateCountdowns, 1000);
+  updateCountdowns();
 </script>
 </body>
 </html>
